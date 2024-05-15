@@ -67,8 +67,17 @@
         class="w-1/2 rounded-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-stone-500 duration-300">Limpar</button>
     </div>
   </aside>
-  <main>
-    <p>Resultados</p>
+  <main class="h-full">
+    <section id="charts-container">
+      <div class="h-[36dvh]">
+        <p>Resultado Final</p>
+        <canvas id="final-money-distribution"></canvas>
+      </div>
+      <div class="[56dvh]">
+        <p>Progressão</p>
+        <canvas id="progression"></canvas>
+      </div>
+    </section>
   </main>
   <script type="module" src="./main.js"></script>
 </body>
