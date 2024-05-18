@@ -26,7 +26,7 @@ export function generateReturnsArray(
 
   const referenceInvestmentObject = {
     investedAmount: startingAmount,
-    interestReturn: 0,
+    interestReturns: 0,
     totalInterestReturns: 0,
     month: 0,
     totalAmount: startingAmount,
@@ -49,7 +49,7 @@ export function generateReturnsArray(
       investedAmount,
       interestReturns,
       totalInterestReturns,
-      timeReference,
+      month: timeReference,
       totalAmount,
     });
   }
