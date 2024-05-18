@@ -9,7 +9,7 @@
 </head>
 
 <body class="h-[100dvh] grid grid-cols-3 grind-rows-2">
-  <aside class="row-san-2 bg-stone-400 flex flex-col justify-between py-5 px-2">
+  <aside class="h-[100dvh] col-span-1 bg-stone-400 flex flex-col justify-between py-5 px-2">
     <h1 class="text-2xl font-bold px-6">Calculadora de Investimento</h1>
     <form id="investment-form" class="w-full">
       <div class="flex w-full flex-col px-6 my-2 h-[4.25rem]">
@@ -67,14 +67,14 @@
         class="w-1/2 rounded-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-stone-500 duration-300">Limpar</button>
     </div>
   </aside>
-  <main class="h-full">
-    <section id="charts-container">
-      <div class="h-[36dvh]">
-        <p>Resultado Final</p>
+  <main class="row-span-2 col-span-2">
+    <section id="charts-container" class="h-full">
+      <div class="h-[36%] flex flex-col items-center pb-10">
+        <p class="font-bold text-lg">Resultado Final</p>
         <canvas id="final-money-distribution"></canvas>
       </div>
-      <div class="[56dvh]">
-        <p>Progressão</p>
+      <div class="h-[56%] flex flex-col items-center">
+        <p class="font-bold text-lg">Progressão</p>
         <canvas id="progression"></canvas>
       </div>
     </section>
