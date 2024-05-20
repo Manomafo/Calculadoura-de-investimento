@@ -15,27 +15,31 @@ const columnsArray = [
   {
     columnLabel: "Total investido",
     accessor: "investedAmount",
-    format: (numberInfo) => formatCurrency(numberInfo),
+    format: (numberInfo) => formatCurrencyToTable(numberInfo),
   },
   {
     columnLabel: "Rendimento mensal",
     accessor: "interestReturns",
-    format: (numberInfo) => formatCurrency(numberInfo),
+    format: (numberInfo) => formatCurrencyToTable(numberInfo),
   },
   {
     columnLabel: "Rendimento total",
     accessor: "totalInterestReturns",
-    format: (numberInfo) => formatCurrency(numberInfo),
+    format: (numberInfo) => formatCurrencyToTable(numberInfo),
   },
   {
     columnLabel: "Quantia total",
     accessor: "totalAmount",
-    format: (numberInfo) => formatCurrency(numberInfo),
+    format: (numberInfo) => formatCurrencyToTable(numberInfo),
   },
 ];
 
-function formatCurrency(value) {
+function formatCurrencyToTable(value) {
   return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
+function formatCurrencyToGraph(value) {
+  return value.toFixed(2);
 }
 
 function renderProgression(evt) {
@@ -70,71 +74,72 @@ function renderProgression(evt) {
     returnRatePeriod
   );
 
-  //   const finalInvetmentObject = returnsArray[returnsArray.length - 1];
+  const finalInvetmentObject = returnsArray[returnsArray.length - 1];
 
-  //   console.log(finalInvetmentObject);
+  console.log(finalInvetmentObject);
 
-  //   doughnutChartReference = new Chart(finalMoneyChart, {
-  //     type: "doughnut",
-  //     data: {
-  //       labels: ["Total invetido", "Rendimento", "Imposto"],
-  //       datasets: [
-  //         {
-  //           data: [
-  //             formatCurrency(finalInvetmentObject.investedAmount),
-  //             formatCurrency(
-  //               finalInvetmentObject.totalInterestReturns * (1 - taxRate / 100)
-  //             ),
-  //             formatCurrency(
-  //               finalInvetmentObject.totalInterestReturns * (taxRate / 100)
-  //             ),
-  //           ],
-  //           backgroundColor: [
-  //             "rgb(255, 99, 132)",
-  //             "rgb(54, 162, 235)",
-  //             "rgb(255, 205, 86)",
-  //           ],
-  //           hoverOffset: 4,
-  //         },
-  //       ],
-  //     },
-  //   });
+  doughnutChartReference = new Chart(finalMoneyChart, {
+    type: "doughnut",
+    data: {
+      labels: ["Total invetido", "Rendimento", "Imposto"],
+      datasets: [
+        {
+          data: [
+            formatCurrencyToGraph(finalInvetmentObject.investedAmount),
+            formatCurrencyToGraph(
+              finalInvetmentObject.totalInterestReturns * (1 - taxRate / 100)
+            ),
+            formatCurrencyToGraph(
+              finalInvetmentObject.totalInterestReturns * (taxRate / 100)
+            ),
+          ],
+          backgroundColor: [
+            "rgb(255, 99, 132)",
+            "rgb(54, 162, 235)",
+            "rgb(255, 205, 86)",
+          ],
+          hoverOffset: 4,
+        },
+      ],
+    },
+  });
 
-  //   progressionChartReference = new Chart(progressionChart, {
-  //     type: "bar",
-  //     data: {
-  //       labels: returnsArray.map((investmentObject) => investmentObject.month),
-  //       datasets: [
-  //         {
-  //           label: "Total Investido",
-  //           data: returnsArray.map((investmentObject) =>
-  //             formatCurrency(investmentObject.investedAmount)
-  //           ),
-  //           backgroundColor: "rgb(255, 99, 132)",
-  //         },
-  //         {
-  //           label: "Retorno do Investimento",
-  //           data: returnsArray.map((investmentObject) =>
-  //             formatCurrency(investmentObject.interestReturns)
-  //           ),
-  //           backgroundColor: "rgb(54, 162, 235)",
-  //         },
-  //       ],
-  //     },
-  //     options: {
-  //       responsive: true,
-  //       scales: {
-  //         x: {
-  //           stacked: true,
-  //         },
-  //         y: {
-  //           stacked: true,
-  //         },
-  //       },
-  //     },
-  //   });
+  progressionChartReference = new Chart(progressionChart, {
+    type: "bar",
+    data: {
+      labels: returnsArray.map((investmentObject) => investmentObject.month),
+      datasets: [
+        {
+          label: "Total Investido",
+          data: returnsArray.map((investmentObject) =>
+            formatCurrencyToGraph(investmentObject.investedAmount)
+          ),
+          backgroundColor: "rgb(255, 99, 132)",
+        },
+        {
+          label: "Retorno do Investimento",
+          data: returnsArray.map((investmentObject) =>
+            formatCurrencyToGraph(investmentObject.interestReturns)
+          ),
+          backgroundColor: "rgb(54, 162, 235)",
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          stacked: true,
+        },
+        y: {
+          stacked: true,
+        },
+      },
+    },
+  });
 
   createTable(columnsArray, returnsArray, "results-table");
+  nexButton.classList.remove("hidden");
 }
 
 function isObjectEmpty(obj) {
@@ -157,7 +162,10 @@ function clearForm() {
   form["time-amount"].value = "";
   form["return-rate"].value = "";
   form["tax-rate"].value = "";
-
+  nexButton.classList.add("hidden");
+  previousButton.classList.add("hidden");
+  Array.from(table.children).forEach((elementTable) => elementTable.remove());
+  carouselEl.scrollLeft -= mainEl.clientWidth;
   resetCharts();
 
   const errorInputsContaiers = document.querySelectorAll(".error");
@@ -205,6 +213,25 @@ for (const formElement of form) {
     formElement.addEventListener("blur", validateInput);
   }
 }
+
+const mainEl = document.querySelector("main");
+const carouselEl = document.getElementById("carousel");
+const nexButton = document.getElementById("slide-arrow-next");
+const previousButton = document.getElementById("slide-arrow-previous");
+const table = document.getElementById("results-table");
+
+console.log(nexButton);
+nexButton.addEventListener("click", () => {
+  carouselEl.scrollLeft += mainEl.clientWidth;
+  previousButton.classList.remove("hidden");
+  nexButton.classList.add("hidden");
+});
+
+previousButton.addEventListener("click", () => {
+  carouselEl.scrollLeft -= mainEl.clientWidth;
+  previousButton.classList.add("hidden");
+  nexButton.classList.remove("hidden");
+});
 
 form.addEventListener("submit", renderProgression);
 // calculateButton.addEventListener("click", renderProgression);
