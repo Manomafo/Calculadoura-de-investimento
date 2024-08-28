@@ -40,7 +40,7 @@ function createTableHeader(tableReference, columnsArray) {
     createTheadElement(tableReference);
   //<table><thead></thead></table>
   const headerRow = document.createElement("tr"); // <tr></tr>
-  ["bg-stone-700", "text-slate-200", "sticky", "top-0"].forEach((cssClass) =>
+  ["bg-gray-900", "text-violet-50", "sticky", "top-0"].forEach((cssClass) =>
     headerRow.classList.add(cssClass)
   );
   for (const tableColumnObject of columnsArray) {
@@ -63,7 +63,7 @@ function createTableBody(tableReference, tableItems, columnsArray) {
   for (const [itemIndex, tableItem] of tableItems.entries()) {
     const tableRow = document.createElement("tr");
     if (itemIndex % 2 !== 0) {
-      tableRow.classList.add("bg-stone-300");
+      tableRow.classList.add("bg-violet-300");
     }
     for (const tableColumn of columnsArray) {
       const formatFn = tableColumn.format ?? ((info) => info);
